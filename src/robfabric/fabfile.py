@@ -3,12 +3,10 @@
 import os
 from glob import glob
 
-from fabric.api import lcd, local, put, env, run, sudo, prefix, execute, task, abort
-# from git_version import git_version
+from fabric.api import lcd, local, put, env, run, sudo, execute, task, abort
 from setuptools_scm import get_version
 
 env.use_ssh_config = True
-# env.hosts = []
 
 
 def _find_project_root():
@@ -70,7 +68,6 @@ _dist_file_patterns = {
 
 def _get_dist_file_name(dist_type='wheel'):
     pattern = os.path.join('dist', _dist_file_patterns[dist_type] % {'version': get_version()})
-    print(pattern)
     return os.path.basename(glob(pattern)[0])
 
 
