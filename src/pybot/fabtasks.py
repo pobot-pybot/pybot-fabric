@@ -21,11 +21,13 @@ def _find_project_root():
 
 
 def get_version():
+    """ Alias original setuptools_scm version for force the post-release version scheme """
     return scm_get_version(version_scheme='post-release')
 
 
 @task(aliases=['inc_build', 'inc_patch'])
 def inc_version_build(pkg='.'):
+    """ Increment the version build (aka patch) number """
     with lcd(pkg):
         major, minor, build_num, _ = (get_version().split('.') + [''])[:4]
         build_num = int(build_num) + 1
@@ -35,6 +37,7 @@ def inc_version_build(pkg='.'):
 
 @task(alias='inc_minor')
 def inc_version_minor(pkg='.'):
+    """ Increment the version minor number """
     with lcd(pkg):
         major, minor, _ = get_version().split('.', 2)
         minor = int(minor) + 1
@@ -44,6 +47,7 @@ def inc_version_minor(pkg='.'):
 
 @task(alias='inc_major')
 def inc_version_major(pkg='.'):
+    """ Increment the version major number """
     with lcd(pkg):
         major, _ = get_version().split('.', 2)
         major = int(major) + 1
@@ -53,6 +57,7 @@ def inc_version_major(pkg='.'):
 
 @task
 def clean(pkg='.'):
+    """ Remove previously generated distribution packages """
     with lcd(pkg):
         local('python setup.py clean --all', capture=False)
         local('/bin/rm -rf build dist *.egg-info', capture=False)
@@ -60,6 +65,7 @@ def clean(pkg='.'):
 
 @task
 def wheel(pkg='.'):
+    """ Generates a wheel """
     with lcd(pkg):
         local('python setup.py bdist_wheel', capture=False)
 
@@ -77,21 +83,14 @@ def _get_dist_file_name(dist_type='wheel'):
 
 @task
 def deploy(pkg='.'):
+    """ Deploys the generated package on the configured host(s) """
     with lcd(pkg):
         put(os.path.join('dist', _get_dist_file_name()), '.')
 
 
 @task
 def install(pkg='.', venv=None, as_root=False):
-    # with lcd(pkg):
-    #     dist = local('python setup.py --fullname', capture=True).strip()
-    #     pkg_file = '%s.tar.gz' % dist
-    # if venv:
-    #     with prefix('. ~/.local/bin/virtualenvwrapper.sh'), prefix('workon %s' % venv):
-    #         run('pip install %s --upgrade --no-cache-dir' % pkg_file)
-    # else:
-    #     run_or_sudo = sudo if as_root else run
-    #     run_or_sudo('pip install %s --upgrade --no-cache-dir -v' % pkg_file)
+    """ Installs the generated package on the configured host(s) """
     with lcd(pkg):
         dist_file = _get_dist_file_name()
         cmde = 'pip install %s --upgrade' % dist_file
@@ -103,6 +102,7 @@ def install(pkg='.', venv=None, as_root=False):
 
 @task(default=True)
 def all(pkg='.', venv=None, as_root=None):
+    """ Macro task chaining wheel, deploy and install """
     execute(wheel, pkg)
     execute(deploy, pkg)
     execute(install, pkg, venv, as_root)
@@ -110,6 +110,7 @@ def all(pkg='.', venv=None, as_root=None):
 
 @task
 def doc(pkg='.', clean_before='n'):
+    """ Generates the package Sphinx documentation (if available) """
     sphinx_build = local('which sphinx-build', capture=True)
     build_dir = '_build'
 

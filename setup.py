@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='rob-fabric',
+    name='pybot-fabric',
     setup_requires=['setuptools_scm'],
     use_scm_version=True,
     packages=find_packages("src"),
@@ -10,5 +10,5 @@ setup(
     license='',
     author='Eric Pascual',
     author_email='eric@pobot.org',
-    description='Shared fabric cookbook',
+    description='Common fabric tasks',
 )
