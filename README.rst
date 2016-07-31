@@ -47,11 +47,11 @@ Provided tasks
 
 In short :
 
-    - version number management : increment major, minor, build/patch numbers independently
-    - wheel package generation
-    - deployment on target host(s)
-    - remote installation on target host(s)
-    - macro-task chaining wheel generation, deployment and installation on host(s)
+- version number management : increment major, minor, build/patch numbers independently
+- wheel package generation
+- deployment on target host(s)
+- remote installation on target host(s)
+- macro-task chaining wheel generation, deployment and installation on host(s)
 
 Use `fab --list` to display the tasks and their description.
 
