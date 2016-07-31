@@ -49,7 +49,7 @@ def inc_version_minor(pkg='.'):
 def inc_version_major(pkg='.'):
     """ Increment the version major number """
     with lcd(pkg):
-        major, _ = get_version().split('.', 2)
+        major, _ = get_version().split('.', 1)
         major = int(major) + 1
         tag = "%d.0.0" % major
         local('git tag %s -am "%s"' % (tag, tag))
