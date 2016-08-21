@@ -4,7 +4,7 @@ import os
 from glob import glob
 
 from fabric.api import lcd, local, put, env, run, sudo, execute, task, abort
-from setuptools_scm import get_version as scm_get_version
+from setuptools_scm import get_version
 
 env.use_ssh_config = True
 
@@ -18,11 +18,6 @@ def _find_project_root():
         curdir = os.getcwd()
     root = os.path.abspath(curdir)
     return root
-
-
-def get_version():
-    """ Alias original setuptools_scm version for force the post-release version scheme """
-    return scm_get_version(version_scheme='post-release')
 
 
 @task(aliases=['inc_build', 'inc_patch'])
