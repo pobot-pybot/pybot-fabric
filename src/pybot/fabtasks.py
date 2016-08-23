@@ -20,12 +20,22 @@ def _find_project_root():
     return root
 
 
+@task
+def version(pkg='.'):
+    """ Display the version number """
+    with lcd(pkg):
+        print(get_version())
+
+
 @task(aliases=['inc_build', 'inc_patch'])
 def inc_version_build(pkg='.'):
     """ Increment the version build (aka patch) number """
     with lcd(pkg):
-        major, minor, build_num, _ = (get_version().split('.') + [''])[:4]
-        build_num = int(build_num) + 1
+        major, minor, build_num, dirty = (get_version().split('.') + [''])[:4]
+        if dirty.startswith('dev'):
+            build_num = int(build_num)
+        else:
+            build_num = int(build_num) + 1
         tag = "%s.%s.%d" % (major, minor, build_num)
         local('git tag %s -am "%s"' % (tag, tag))
 
