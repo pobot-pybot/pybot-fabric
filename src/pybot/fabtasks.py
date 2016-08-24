@@ -27,7 +27,7 @@ def version(pkg='.'):
         print(get_version())
 
 
-@task(aliases=['inc_build', 'inc_patch'])
+@task(aliases=['inc_build', 'inc_patch', 'release'])
 def inc_version_build(pkg='.'):
     """ Increment the version build (aka patch) number """
     with lcd(pkg):
