@@ -90,7 +90,7 @@ def _get_dist_file_name(dist_type='wheel'):
 def deploy(pkg='.'):
     """ Deploys the generated package on the configured host(s) """
     with lcd(pkg):
-        put(os.path.join('dist', _get_dist_file_name()), '.')
+        put(os.path.join('dist', _get_dist_file_name()), '/tmp')
 
 
 @task
@@ -98,7 +98,7 @@ def install(pkg='.', venv=None, as_root=False):
     """ Installs the generated package on the configured host(s) """
     with lcd(pkg):
         dist_file = _get_dist_file_name()
-        cmde = 'pip install %s --upgrade' % dist_file
+        cmde = 'pip install /tmp/%s --upgrade' % dist_file
         if as_root:
             sudo(cmde)
         else:
